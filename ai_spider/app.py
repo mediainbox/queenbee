@@ -583,6 +583,7 @@ async def worker_connect(websocket: WebSocket):
     # get the source ip, for long-term punishment of bad actors
     req = HTTPConnection(websocket.scope)
     websocket.info["ip"] = get_ip(req)
+    js["ip"] = websocket.info["ip"]
 
     websocket.queue = Queue()
     websocket.results = Queue()
