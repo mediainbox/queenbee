@@ -57,7 +57,7 @@ class WorkerManager:
         self.busy.pop(sock, None)
 
     @contextlib.contextmanager
-    def get_socket_for_inference(self, msize: int, worker_type: WORKER_TYPES, gpu_filter={}) \
+    def get_socket_for_inference(self, msize: int, worker_type: WORKER_TYPES, gpu_filter={}, avoid=[]) \
             -> Generator[QueueSocket, None, None]:
         # msize is params adjusted by quant level with a heuristic
 
@@ -77,6 +77,8 @@ class WorkerManager:
             good = []
             close = []
             for sock, info in self.socks.items():
+                if sock in avoid:
+                    continue
                 cpu_vram = info.get("vram", 0)
                 disk_space = info.get("disk_space", 0)
                 nv_gpu_ram = sum([el.get("memory", 0) for el in info.get("nv_gpus", [])])

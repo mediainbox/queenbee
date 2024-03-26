@@ -253,7 +253,9 @@ async def create_chat_completion(
                 raise
             log.error("try again: %s: ", repr(ex))
             await asyncio.sleep(0.25)
-            with mgr.get_socket_for_inference(msize, worker_type, gpu_filter) as ws:
+            if isinstance(ex, HTTPException) and "socked dropped" in ex.detail:
+                mgr.drop_worker(ws)
+            with mgr.get_socket_for_inference(msize, worker_type, gpu_filter, avoid=[ws]) as ws:
                 return await do_inference(request, body, ws, final=True)
     except HTTPException as ex:
         log.error("inference failed : %s", repr(ex))
