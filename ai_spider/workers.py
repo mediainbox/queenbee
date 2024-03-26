@@ -29,6 +29,7 @@ def anon_info(ent, **fin):
     info = ent.info
     fin["worker_version"] = info.get("worker_version")
     fin["capabilities"] = info.get("capabilities", [])
+    fin["balena_device_name"] = info.get("balena_device_name", "")
     fin["ip"] = info.get("ip")
     nv_gpu_cnt = sum([1 for _ in info.get("nv_gpus", [])])
     cl_gpu_cnt = sum([1 for _ in info.get("cl_gpus", [])])
