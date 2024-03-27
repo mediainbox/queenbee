@@ -171,6 +171,12 @@ async def worker_stats() -> dict:
     return mgr.worker_stats()
 
 
+@app.get("/worker/extended", tags=["worker"])
+async def worker_detail_extended() -> dict:
+    """List of all workers, with detailed info"""
+    mgr = get_reg_mgr()
+    return mgr.worker_detail()
+
 @app.get("/worker/detail", tags=["worker"])
 async def worker_detail(query: Optional[str] = None, user_id: str = Depends(optional_bearer_token)) -> list:
     """List of all workers, with anonymized info"""

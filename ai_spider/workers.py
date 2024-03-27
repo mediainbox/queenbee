@@ -85,6 +85,8 @@ class WorkerManager:
                 nv_gpu_ram = sum([el.get("memory", 0) for el in info.get("nv_gpus", [])])
                 cl_gpu_ram = sum([el.get("memory", 0) for el in info.get("cl_gpus", [])])
                 have_web_gpus = is_web_worker(info)
+                if not nv_gpu_ram and not cl_gpu_ram and not have_web_gpus:
+                    continue
 
                 if ver := gpu_filter.get("min_version"):
                     try:
