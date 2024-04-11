@@ -95,3 +95,11 @@ Status updates arrive via websockets every 25 training steps.
 Checkpoints are saved to the associated S3 (or other configured storage) bucket if available.
 
 Info about LORA hyperparameters is found in [[FINETUNE.md]].
+
+
+# Docker
+
+docker build -t queenbee .
+
+docker run -e BILLING_URL=http://localhost:9090 -e SECRET_KEY=asdasd --rm --name queenbee queenbee
+
