@@ -547,11 +547,13 @@ async def do_inference(request, body: CreateChatCompletionRequest, ws: "QueueSoc
 
 def get_ip(request: HTTPConnection):
     ip = request.client.host
-    if not (ip.startswith("192.168") or ip.startswith("10.10")):
+    if ip := request.headers.get("x-forwarded-for"):
         return ip
     if ip := request.headers.get("x-real-ip"):
         return ip
-    if ip := request.headers.get("x-forwarded-for"):
+    if ip := request.headers.get("x-real-ip"):
+        return ip
+    if not (ip.startswith("192.168") or ip.startswith("10.10")):
         return ip
     return ip
 
